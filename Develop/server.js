@@ -8,6 +8,8 @@ const PORT = 3001;
 
 const app = express();
 
+const notesArray = [];
+
 // set up middleware as to handle data parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -53,7 +55,11 @@ app.post('/api/notes', (req, res) => {
         // // so new note is appended to last notes
         const readNote = fs.readFileSync('./db/db.json', 'utf8');
         const parsedNote = JSON.parse(readNote);
-        parsedNote.push(newNote);
+        console.log(`PARSED NOTE: ${parsedNote}`); //object
+        //parsedNote.push(newNote);
+
+        notesArray.push(newNote);
+        // console.log('notes array: ', notesArray); // note coming back as an array of objects
         
         //convert data to string so we can save it
         const noteString = JSON.stringify(newNote, null, 2);
