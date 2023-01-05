@@ -15,11 +15,12 @@ app.use(express.urlencoded({ extended: true }));
 //serve static files from the '/public' folder || Allows us to reference files by their relative path
 app.use(express.static('public'));
 
-// HTML routes
+// GET Route for notes page
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/notes.html'))
 });
 
+// GET Route for homepage
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'))
 });
@@ -47,9 +48,9 @@ app.post('/api/notes', (req, res) => {
             title, 
             text,
             noteId: uuid(),
-        }
+        };
         
-        // so new note does not overwrite file, just adds new note to existing
+        // // so new note is appended to last notes
         const readNote = fs.readFileSync('./db/db.json', 'utf8');
         const parsedNote = JSON.parse(readNote);
         parsedNote.push(newNote);
@@ -57,11 +58,10 @@ app.post('/api/notes', (req, res) => {
         //convert data to string so we can save it
         const noteString = JSON.stringify(newNote, null, 2);
         
-        const filename = newNote.title.toLowerCase().replaceAll(' ', '-');
         
-        fs.writeFile('./db/db.json', noteString, (err) => {
+        fs.writeFile(`./db/db.json`, noteString, (err) => {
             if (err){
-                console.log(err);
+                console.err(err);
             } else {
                 console.log(`Note for ${newNote.title} has been written to JSON file`)
             }
@@ -74,6 +74,7 @@ app.post('/api/notes', (req, res) => {
 
         console.log(response);
         res.status(201).json(response);
+
     } else {
         res.status(500).json('Error in posting note');
     }
