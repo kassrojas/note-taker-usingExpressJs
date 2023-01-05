@@ -2,13 +2,14 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const uuid = require('./helpers/uuid');
-const dbJ = require('./db/db.json')
+const dbJ = require('./db/db.json');
+
 
 const PORT = 3001;
 
 const app = express();
 
-const notesArray = [];
+// const notesArray = [];
 
 // set up middleware as to handle data parsing
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //serve static files from the '/public' folder || Allows us to reference files by their relative path
 app.use(express.static('public'));
+
 
 // GET Route for notes page
 app.get('/notes', (req, res) => {
@@ -51,14 +53,19 @@ app.post('/api/notes', (req, res) => {
             text,
             noteId: uuid(),
         };
+
+        readAndAppend(newNote, './db/db.json');
+
+        
+
         
         // // so new note is appended to last notes
         const readNote = fs.readFileSync('./db/db.json', 'utf8');
         const parsedNote = JSON.parse(readNote);
         console.log(`PARSED NOTE: ${parsedNote}`); //object
-        //parsedNote.push(newNote);
+        parsedNote.push(newNote);
 
-        notesArray.push(newNote);
+        // notesArray.push(newNote);
         // console.log('notes array: ', notesArray); // note coming back as an array of objects
         
         //convert data to string so we can save it
@@ -79,10 +86,10 @@ app.post('/api/notes', (req, res) => {
         };
 
         console.log(response);
-        res.status(201).json(response);
+        res.json(response);
 
     } else {
-        res.status(500).json('Error in posting note');
+        res.json('Error in posting note');
     }
 });
 
