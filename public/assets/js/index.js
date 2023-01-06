@@ -102,7 +102,7 @@ const handleNoteView = (e) => {
   renderActiveNote();
 };
 
-// Sets the activeNote to and empty object and allows the user to enter a new note
+// Sets the activeNote to an empty object and allows the user to enter a new note
 const handleNewNoteView = (e) => {
   activeNote = {};
   renderActiveNote();
@@ -116,11 +116,12 @@ const handleRenderSaveBtn = () => {
   }
 };
 
-// Render the list of note titles
+// Render the list of note titles INNERHTML????****
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
+  console.log(`jsonNotes : ${jsonNotes}`);
   if (window.location.pathname === '/notes') {
-    noteList.forEach((el) => (el.innerHTML = ''));
+    noteList.forEach((el) => (el.innerHTML = noteListeItems ));
   }
 
   let noteListItems = [];

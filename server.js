@@ -2,14 +2,11 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const uuid = require('./helpers/uuid');
-const dbJ = require('./db/db.json');
-
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-// const notesArray = [];
 
 // set up middleware as to handle data parsing
 app.use(express.json());
@@ -31,7 +28,8 @@ app.get('*', (req, res) => {
 
 // API GET resquest for notes
 app.get('/api/notes', (req, res) => {
-    res.json(dbJ);
+    const data = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'));
+    res.json(data);
     // send message to client
     res.json(`${req.method} request received to get notes`);
     // log request to terminal
@@ -54,23 +52,14 @@ app.post('/api/notes', (req, res) => {
             noteId: uuid(),
         };
 
-        readAndAppend(newNote, './db/db.json');
-
-        
-
         
         // // so new note is appended to last notes
-        const readNote = fs.readFileSync('./db/db.json', 'utf8');
-        const parsedNote = JSON.parse(readNote);
-        console.log(`PARSED NOTE: ${parsedNote}`); //object
-        parsedNote.push(newNote);
+        const data = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'));
+        console.log('data', data); 
+        data.push(newNote);
 
-        // notesArray.push(newNote);
-        // console.log('notes array: ', notesArray); // note coming back as an array of objects
-        
         //convert data to string so we can save it
-        const noteString = JSON.stringify(newNote, null, 2);
-        
+        const noteString = JSON.stringify(data, null, 2);
         
         fs.writeFile(`./db/db.json`, noteString, (err) => {
             if (err){
