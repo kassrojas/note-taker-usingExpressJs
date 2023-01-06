@@ -1,10 +1,11 @@
 # Note Taker using Express.js
 
+[Link to my project](https://polar-mesa-70551.herokuapp.com/)
+
 ## Table of Contents
 
 * [Description](#description)
 * [Installation](#installation)
-* [Visuals](#visuals)
 * [License](#license)
 * [Contributing](#contributing)
 * [Tests](#tests)
@@ -22,11 +23,6 @@ To install necessary dependencies, run the following commands:
 ```npm init -y``` is neccessary to install package.json. 
 
 ```npm install``` is needed to install necessary dependencies. 
-
-
-## Visuals
-
-
 
 ## License
 
