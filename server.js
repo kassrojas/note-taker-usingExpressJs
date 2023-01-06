@@ -13,6 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
+// GET Route for homepage
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/index.html'))
+});
+
 // GET Route for notes page
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/notes.html'))
@@ -21,7 +26,7 @@ app.get('/notes', (req, res) => {
 // API GET resquest for notes
 app.get('/api/notes', (req, res) => {
     console.info(`${req.method} request received`);
-    
+
     const data = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'));
     res.json(data);
 })
@@ -32,9 +37,9 @@ app.post('/api/notes', (req, res) => {
 
     const { title, text } = req.body;
 
-    if (title && text){
+    if (title && text) {
         const newNote = {
-            title, 
+            title,
             text,
             id: uuid(),
         };
@@ -46,15 +51,15 @@ app.post('/api/notes', (req, res) => {
 
         //convert data to string so we can save it
         const noteString = JSON.stringify(parsedNotes, null, 2);
-        
+
         fs.writeFile(`./db/db.json`, noteString, (err) => {
-            if (err){
+            if (err) {
                 console.err(err);
             } else {
                 console.log(`Note for " ${newNote.title}" has been written to JSON file`)
             }
         });
-        
+
         const response = {
             status: 'Success!',
             body: newNote,
@@ -67,10 +72,12 @@ app.post('/api/notes', (req, res) => {
     }
 });
 
-// GET Route for homepage
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/index.html'))
+app.delete('/api/notes/:id', (req, res) => {
+    const { id } = req.params;
+    console.info(`${req.method} request received to delete note ${id}`);
+    res.send(id);
 });
+
 
 app.listen(PORT, () => {
     console.log(`app listening at http://localhost:${PORT}`);
