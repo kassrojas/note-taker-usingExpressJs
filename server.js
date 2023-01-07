@@ -27,8 +27,8 @@ app.get('/notes', (req, res) => {
 app.get('/api/notes', (req, res) => {
     console.info(`${req.method} request received`);
 
-    const data = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'));
-    res.json(data);
+    const parsedNotes = JSON.parse(fs.readFileSync('./db/db.json', 'utf8'));
+    res.json(parsedNotes);
 })
 
 // API POST request to add a note
@@ -72,10 +72,27 @@ app.post('/api/notes', (req, res) => {
     }
 });
 
-app.delete('/api/notes/:id', (req, res) => {
+app.delete(`/api/notes/:id`, (req, res) => {
     const { id } = req.params;
-    console.info(`${req.method} request received to delete note ${id}`);
-    res.send(id);
+    
+    const savedNotes = fs.readFileSync('./db/db.json', 'utf-8');
+    const parsedNotes = JSON.parse(savedNotes);
+
+    const deleteNote = parsedNotes.filter((note) => {
+        
+       if (note.id == id) {
+        res.send();
+        
+       } else {
+        console.log('error deleting note');
+       };
+    });
+    
+    
+    const noteList = JSON.stringify(deleteNote, null, 2);
+    fs.writeFile(`./db/db.json`, noteList, (err) => err ? console.error(err) : console.log('Deleted note'));
+    
+    res.send();
 });
 
 
