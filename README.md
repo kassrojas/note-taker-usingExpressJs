@@ -6,8 +6,8 @@
 
 * [Description](#description)
 * [Installation](#installation)
+* [Visuals](#contributing)
 * [License](#license)
-* [Contributing](#contributing)
 * [Tests](#tests)
 * [Questions](#questions)
 
@@ -23,6 +23,14 @@ To install necessary dependencies, run the following commands:
 ```npm init -y``` is neccessary to install package.json. 
 
 ```npm install``` is needed to install necessary dependencies. 
+
+# Visuals
+
+Below are screenshots of the working webpage
+
+![Webpage Screenshot](./assets/images/Screenshot%202023-01-09%20at%2011.18.01%20AM.png)
+
+![Webpage Screenshot](./assets/images/Screenshot%202023-01-09%20at%2011.18.10%20AM.png)
 
 ## License
 
